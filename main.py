@@ -28,13 +28,7 @@ def main():
         logging.error(f"❌ خطأ: {e}")
 
 if __name__ == '__main__':
-    main()    )
-
-async def keep_alive():
-    """إبقاء البوت نشطاً على Render"""
-    while True:
-        logging.info("🟢 البوت يعمل...")
-        await asyncio.sleep(300)  # كل 5 دقائق
+    main()        await asyncio.sleep(300)  # كل 5 دقائق
 
 def main():
     # إعداد التسجيل
