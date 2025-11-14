@@ -1,40 +1,34 @@
 import os
 import logging
-from telegram import Update
-from telegram.ext import Application, CommandHandler, ContextTypes
-import asyncio
+from telegram.ext import Updater, CommandHandler
 
-# التوكن من متغيرات البيئة
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = update.message.from_user
-    await update.message.reply_text(
-        f"🎯 **مرحباً {user.first_name}!**\n\n"
-        "🤖 **أنا البوت الذكي لأبو علي**\n\n"
-        "✅ **الميزات المتاحة:**\n"
-        "• تحليل البوتات الذكي\n" 
-        "• إدارة المحافظ\n"
-        "• نظام الإحالات\n"
-        "• إدارة المشاريع\n"
-        "• تقارير تلقائية\n\n"
-        "🚀 **البوت يعمل على Render بنجاح!**",
-        parse_mode='Markdown'
-    )
+def start(update, context):
+    update.message.reply_text("🎯 **مرحباً! البوت يعمل الآن بنجاح** ✅", parse_mode='Markdown')
 
-async def analyze(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "🔍 **نظام تحليل البوتات جاهز**\n\n"
-        "أرسل username أي بوت لتحليله!",
-        parse_mode='Markdown'
-    )
+def main():
+    logging.basicConfig(level=logging.INFO)
+    
+    if not BOT_TOKEN:
+        logging.error("❌ BOT_TOKEN غير موجود!")
+        return
+    
+    try:
+        updater = Updater(BOT_TOKEN, use_context=True)
+        dp = updater.dispatcher
+        
+        dp.add_handler(CommandHandler("start", start))
+        
+        updater.start_polling()
+        logging.info("✅ البوت يعمل على Render!")
+        updater.idle()
+        
+    except Exception as e:
+        logging.error(f"❌ خطأ: {e}")
 
-async def wallets(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(
-        "💼 **نظام إدارة المحافظ جاهز**\n\n"
-        "جاري تحميل بيانات محافظك...",
-        parse_mode='Markdown'
-    )
+if __name__ == '__main__':
+    main()    )
 
 async def keep_alive():
     """إبقاء البوت نشطاً على Render"""
